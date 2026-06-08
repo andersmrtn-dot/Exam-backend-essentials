@@ -1,0 +1,41 @@
+{% extends "base.html" %}
+{% block title %}MyBlog — All Posts{% endblock %}
+
+{% block content %}
+<section class="hero">
+  <p class="hero-label">Personal Writing</p>
+  <h1 class="hero-title">Thoughts, notes,<br><em>and observations.</em></h1>
+  <p class="hero-sub">A quiet corner of the web. No algorithms, no feeds — just writing.</p>
+</section>
+
+<section class="post-list">
+  {% if posts %}
+    {% for post in posts %}
+    <article class="post-card">
+      <div class="post-card__meta">
+        <time>{{ post.created_at | format_date }}</time>
+      </div>
+      <h2 class="post-card__title">
+        <a href="{{ url_for('post', slug=post.slug) }}">{{ post.title }}</a>
+      </h2>
+      {% if post.excerpt %}
+        <p class="post-card__excerpt">{{ post.excerpt }}</p>
+      {% endif %}
+      <div class="post-card__actions">
+        <a href="{{ url_for('post', slug=post.slug) }}" class="read-link">Read →</a>
+        <a href="{{ url_for('edit_post', slug=post.slug) }}" class="action-link">Edit</a>
+        <form method="POST" action="{{ url_for('delete_post', slug=post.slug) }}" class="inline-form"
+              onsubmit="return confirm('Delete this post?')">
+          <button type="submit" class="action-link action-link--danger">Delete</button>
+        </form>
+      </div>
+    </article>
+    {% endfor %}
+  {% else %}
+    <div class="empty-state">
+      <p>No posts yet.</p>
+      <a href="{{ url_for('new_post') }}" class="btn-primary">Write your first post</a>
+    </div>
+  {% endif %}
+</section>
+{% endblock %}

@@ -1,0 +1,33 @@
+{% extends "base.html" %}
+{% block title %}{{ post.title }} — MyBlog{% endblock %}
+
+{% block content %}
+<article class="post-full">
+  <header class="post-full__header">
+    <a href="{{ url_for('index') }}" class="back-link">← All Posts</a>
+    <time class="post-full__date">{{ post.created_at | format_date }}</time>
+    <h1 class="post-full__title">{{ post.title }}</h1>
+    {% if post.updated_at != post.created_at %}
+      <p class="post-full__updated">Updated {{ post.updated_at | format_date }}</p>
+    {% endif %}
+  </header>
+
+  <div class="post-full__body">
+    {% for paragraph in post.content.split('\n\n') %}
+      {% if paragraph.strip() %}
+        <p>{{ paragraph.strip() }}</p>
+      {% endif %}
+    {% endfor %}
+  </div>
+
+  <footer class="post-full__footer">
+    <div class="post-actions">
+      <a href="{{ url_for('edit_post', slug=post.slug) }}" class="btn-secondary">Edit Post</a>
+      <form method="POST" action="{{ url_for('delete_post', slug=post.slug) }}"
+            onsubmit="return confirm('Delete this post permanently?')">
+        <button type="submit" class="btn-danger">Delete</button>
+      </form>
+    </div>
+  </footer>
+</article>
+{% endblock %}
