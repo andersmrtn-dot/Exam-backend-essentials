@@ -1,4 +1,4 @@
-# Marginalia — Personal Blog
+# A Personal Blog
 
 A clean personal blog built with Python (Flask), SQLite, and hand-crafted HTML/CSS.
 
